@@ -1,6 +1,5 @@
 package com.feed.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.feed.dto.Posts;

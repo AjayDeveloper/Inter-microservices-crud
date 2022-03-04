@@ -1,7 +1,9 @@
 package com.feed;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.feed.dto.Posts;
-import com.feed.service.FeedService;
 import com.feed.service.FeedServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,19 +30,18 @@ public class FeedServiceTest {
 	
 	
 	 @Test
-	    public void givenMockingIsDoneByMockito_whenGetIsCalled_shouldReturnMockedObject() {
-	     //  List<Object> posts = new ArrayList();
-	     //  posts.add(new Posts(1,1,"1800Flower","Nice roses"));
-	     //  posts.add(new Posts(1,2,"1800Flower","Nice marigold"));
-	    //   posts.add(new Posts(1,3,"1800Flower","Nice test"));
-	    //   posts.add(new Posts(1,4,"1800Flower","Nice tedfs"));
-	    //    Mockito
-	     //     .when(restTemplate.getForEntity(
-	     //       "https://jsonplaceholder.typicode.com/posts", Posts.class))
-	     //     .thenReturn(new ResponseEntity(posts, HttpStatus.OK));
-
-	      //  List<Object> posts2 = feedServiceImpl.getAllpostCount();
-	     //   Assert.assertEquals(posts, posts2);
-	    }
+	 public void testGetallPostUniqueId() throws NullPointerException {
+		 Map<Integer, Long> countId = new HashMap<>();
+		 countId.put(1,10L);
+		 countId.put(2, 10L);
+         
+		 Mockito
+         .when(restTemplate.getForEntity(
+           "http://localhost:9001/userId", Posts.class))
+         .thenReturn(new ResponseEntity(Arrays.asList(countId), HttpStatus.OK));
+		 
+		 Map<Integer,Long> count = feedServiceImpl.getAllpostUniqueId();
+		 Assert.assertEquals(countId, count);
+	 }
 
 }

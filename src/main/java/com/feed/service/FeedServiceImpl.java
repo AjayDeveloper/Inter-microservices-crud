@@ -1,6 +1,5 @@
 package com.feed.service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +52,7 @@ public class FeedServiceImpl implements FeedService {
 	public Integer getAllpostCount() {
 		String uri = "http://jsonplaceholder.typicode.com/posts";
 		ResponseEntity<Posts[]> responseEntity = restTemplate.getForEntity(uri, Posts[].class);
-		return responseEntity.getBody().length;
+		return responseEntity.getStatusCode()==HttpStatus.OK ? responseEntity.getBody().length : null;
 
 	}
 
