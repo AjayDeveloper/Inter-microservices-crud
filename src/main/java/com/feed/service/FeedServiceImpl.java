@@ -50,10 +50,10 @@ public class FeedServiceImpl implements FeedService {
 	}
 
 	@Override
-	public List<Object> getAllpostCount() {
+	public Integer getAllpostCount() {
 		String uri = "http://jsonplaceholder.typicode.com/posts";
-		ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(uri, Object[].class);
-		return Arrays.asList(responseEntity.getBody().length);
+		ResponseEntity<Posts[]> responseEntity = restTemplate.getForEntity(uri, Posts[].class);
+		return responseEntity.getBody().length;
 
 	}
 

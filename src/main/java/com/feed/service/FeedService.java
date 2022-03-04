@@ -9,5 +9,5 @@ public interface FeedService {
 
 	Posts updatePost(Posts posts);
 	Map<Integer, Long> getAllpostUniqueId(); 
-	 List<Object> getAllpostCount();
+	 Integer getAllpostCount();
 }

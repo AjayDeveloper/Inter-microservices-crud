@@ -30,12 +30,13 @@ public class Controller {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	@Autowired
 	FeedService service;
 
-	 Logger logger = LoggerFactory.getLogger(Controller.class);
-	 String uri = "http://jsonplaceholder.typicode.com/posts";
+	Logger logger = LoggerFactory.getLogger(Controller.class);
+	String uri = "http://jsonplaceholder.typicode.com/posts";
+
 	/*
 	 * @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE) public
 	 * List<Integer> getAllposts() { String uri =
@@ -47,25 +48,21 @@ public class Controller {
 	 * }
 	 */
 	@GetMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Object>>  getAllpostCount() {
-		
+	public Integer getAllpostCount() {
 
-		return new ResponseEntity<>(service.getAllpostCount(), HttpStatus.OK);
+		return service.getAllpostCount();
 
 	}
 
 	@GetMapping(value = "/userId", produces = MediaType.APPLICATION_JSON_VALUE)
-	public  Map<Integer, Long> getAllpostUniqueId() {
+	public Map<Integer, Long> getAllpostUniqueId() {
 		return service.getAllpostUniqueId();
 
 	}
-	
-	@PutMapping(value = "/update", consumes =  MediaType.APPLICATION_JSON_VALUE, produces =  MediaType.APPLICATION_JSON_VALUE)
-	public Posts updatePost(@RequestBody Posts posts) {
-		 return service.updatePost(posts);
-	    }
-		
-	
 
+	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Posts updatePost(@RequestBody Posts posts) {
+		return service.updatePost(posts);
+	}
 
 }
