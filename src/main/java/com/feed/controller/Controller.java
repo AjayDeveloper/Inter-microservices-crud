@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.feed.dto.Posts;
+import com.feed.service.FeedService;
 
 @RestController
 
@@ -28,6 +30,9 @@ public class Controller {
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	FeedService service;
 
 	 Logger logger = LoggerFactory.getLogger(Controller.class);
 	 String uri = "http://jsonplaceholder.typicode.com/posts";
@@ -42,41 +47,22 @@ public class Controller {
 	 * }
 	 */
 	@GetMapping(value = "/count", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Object> getAllpostCount() {
+	public ResponseEntity<List<Object>>  getAllpostCount() {
 		
-		Object[] responseEntity = restTemplate.getForObject(uri, Object[].class);
 
-		return Arrays.asList(responseEntity.length);
+		return new ResponseEntity<>(service.getAllpostCount(), HttpStatus.OK);
 
 	}
 
 	@GetMapping(value = "/userId", produces = MediaType.APPLICATION_JSON_VALUE)
 	public  Map<Integer, Long> getAllpostUniqueId() {
-		String uri = "http://jsonplaceholder.typicode.com/posts";
-		Posts[] responseEntity = restTemplate.getForObject(uri, Posts[].class);
-		List<Posts> distinctElements = Stream.of(responseEntity).distinct().collect(Collectors.toList());
-		
-		 Map<Integer, Long> countForId = distinctElements.stream()
-		  .collect(Collectors.groupingBy(Posts::getUserId, Collectors.counting()));
-		 
-		return countForId;
+		return service.getAllpostUniqueId();
 
 	}
 	
 	@PutMapping(value = "/update", consumes =  MediaType.APPLICATION_JSON_VALUE, produces =  MediaType.APPLICATION_JSON_VALUE)
 	public Posts updatePost(@RequestBody Posts posts) {
-		String paramUrl = "https://jsonplaceholder.typicode.com/posts/{pId}";
-		// create map for URL parameters
-		Map<String, Integer> params = new HashMap<String, Integer>();
-		params.put("pId", 4);
-		System.out.println("PUT with parameterized URL");
-		restTemplate.put(paramUrl, posts, params);
-		System.out.println("Resource updated");
-		System.out.println("PUT with parameterized URL");
-		// put with object array for parameters
-		restTemplate.put(paramUrl, posts,new Object[] {4});
-		System.out.println("Resource updated"+posts);
-		 return posts;
+		 return service.updatePost(posts);
 	    }
 		
 	
